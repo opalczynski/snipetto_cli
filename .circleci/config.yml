@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
       - image: circleci/python:3.6.4
-    working_directory: ~/snipetto_service
+    working_directory: ~/snipetto_cli
     steps:
       - checkout
       - run: sudo chown -R circleci:circleci /usr/local/bin
@@ -20,12 +20,3 @@ jobs:
       - run:
           name: Bandit
           command: bandit -r .
-      - run:
-          name: APP Dependency install
-          command: pip3 install -r requirements/app.txt
-      - run:
-          name: Run django tests
-          command: coverage run manage.py test
-      - run:
-          name: Coverage report display
-          command: coverage report -m

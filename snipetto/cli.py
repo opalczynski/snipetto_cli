@@ -1,7 +1,13 @@
 import click
 
 from snipetto.auth.commands import configure
-from snipetto.snippets.commands import add_snippet, search_snippet, edit_snippet, delete_snippet, get_snippet
+from snipetto.snippets.commands import (
+    add_snippet,
+    delete_snippet,
+    edit_snippet,
+    get_snippet,
+    search_snippet
+)
 from snipetto.tags.commands import tags
 
 

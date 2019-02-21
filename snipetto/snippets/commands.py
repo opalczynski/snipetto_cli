@@ -18,7 +18,8 @@ def delete_snippet(name):
 @click.command(name='add')
 @click.option('--slug', 'slug', type=str)
 @click.option('--tags', 'tags', type=str)
-@click.option('--file', 'file', type=click.File('r'))  # for now auto adding just from the file
+# for now auto adding just from the file
+@click.option('--file', 'file', type=click.File('r'))
 def add_snippet(slug, tags, file):
     SnippetsService.add_snippet(slug, tags, file)
 
@@ -26,14 +27,16 @@ def add_snippet(slug, tags, file):
 @click.command(name='edit')
 @click.argument('slug', type=str)
 @click.option('--tags', 'tags', type=str)
-@click.option('--file', 'file', type=click.File('r'))  # for now auto adding just from the file
+# for now auto adding just from the file
+@click.option('--file', 'file', type=click.File('r'))
 def edit_snippet(slug, tags, file):
     SnippetsService.edit_snippet(slug, tags, file)
 
 
 @click.command(name='search')
 @click.option('--tags', 'tags', type=str)
-@click.option('--slug', 'slug', type=str)  # for now auto adding just from the file
+# for now auto adding just from the file
+@click.option('--slug', 'slug', type=str)
 def search_snippet(slug, tags):
     SnippetsService.search_snippet(slug, tags)
 

@@ -1,8 +1,0 @@
-version: '3.7'
-services:
-  snipetto-cli:
-    build:
-      context: .
-      target: "application"
-    volumes:
-      - .:/app/
