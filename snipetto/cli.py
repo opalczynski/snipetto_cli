@@ -7,7 +7,7 @@ from snipetto.snippets.commands import (
     edit_snippet,
     get_snippet,
     list_snippet,
-    search_snippet,
+    search_snippet
 )
 from snipetto.tags.commands import tags
 

@@ -4,11 +4,11 @@ import os
 import click
 import requests
 from click import ClickException
-
 from snipetto.core.configuration import (
+    CONFIG_PATH,
     SNIPETTO_HOST,
-    SNIPETTO_PATH_CONFIGURATION,
-    CONFIG_PATH)
+    SNIPETTO_PATH_CONFIGURATION
+)
 
 
 class ActionTypeE:

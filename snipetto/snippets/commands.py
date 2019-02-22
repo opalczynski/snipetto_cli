@@ -2,7 +2,6 @@ import json
 
 import click
 from click import ClickException
-
 from snipetto.core.services import ActionTypeE
 
 
