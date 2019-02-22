@@ -18,6 +18,7 @@ class ActionTypeE:
     DELETE = 'delete'
     GET = 'get'
 
+
 METHOD_MAP = {
     ActionTypeE.LIST: 'get',
     ActionTypeE.DELETE: 'delete',

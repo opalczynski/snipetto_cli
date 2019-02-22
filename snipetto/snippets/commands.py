@@ -157,4 +157,3 @@ def list_snippet(ctx):
         'snippets', 'list'
     )
     click.echo(json.dumps(response, indent=4))
-
