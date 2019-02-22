@@ -21,7 +21,8 @@ def get_snippet(ctx, slug):
         }
     )
     if len(response["results"]) != 1:
-        raise ClickException("More (or None) snippets found. Check out your slug.")
+        raise ClickException("More (or None) snippets found. "
+                             "Check out your slug.")
     instance_id = response["results"][0]["id"]
     response = api.request(
         'snippets', 'list',
@@ -46,7 +47,8 @@ def delete_snippet(ctx, slug):
         }
     )
     if len(response["results"]) != 1:
-        raise ClickException("More (or None) snippets found. Check out your slug.")
+        raise ClickException("More (or None) snippets found. "
+                             "Check out your slug.")
     instance_id = response["results"][0]["id"]
     response = api.request(
         'snippets', 'list',
@@ -97,7 +99,8 @@ def edit_snippet(ctx, slug, tags, file):
         }
     )
     if len(response["results"]) != 1:
-        raise ClickException("More (or None) snippets found. Check out your slug.")
+        raise ClickException("More (or None) snippets found. "
+                             "Check out your slug.")
     instance_id = response["results"][0]["id"]
     # TODO: make some helper for that
     tags_list = []
@@ -132,7 +135,8 @@ def edit_snippet(ctx, slug, tags, file):
 @click.pass_context
 def search_snippet(ctx, slug, tags):
     if not tags and not slug:
-        raise ClickException("One of the option needs to be provided: slug, tags, or both.")
+        raise ClickException("One of the option needs "
+                             "to be provided: slug, tags, or both.")
     api = ctx.obj['api']
     response = api.request(
         'snippets', 'list',

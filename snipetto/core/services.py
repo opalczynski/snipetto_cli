@@ -38,7 +38,8 @@ class APIService:
 
     def _build_url(self, path, instance_id=None):
         if instance_id:
-            path = "{path}{instance_id}".format(path=path, instance_id=instance_id)
+            path = "{path}{instance_id}".format(path=path,
+                                                instance_id=instance_id)
         if not path.endswith('/'):
             path = "{}/".format(path)
         return "{host}{path}".format(
@@ -55,12 +56,18 @@ class APIService:
         if not os.path.exists(CONFIG_PATH):
             click.echo('Noticed that you are not initialized yet. '
                        'Please fill out data below')
-            username = click.prompt('Provide your username (should be slug)', type=str)
-            password = click.prompt('Provide your password', hide_input=True)
-            response = self.request('auth', 'init', action=ActionTypeE.CREATE, json={
-                'username': username,
-                'password': password
-            })
+            username = click.prompt(
+                'Provide your username (should be slug)', type=str
+            )
+            password = click.prompt(
+                'Provide your password', hide_input=True
+            )
+            response = self.request(
+                'auth', 'init', action=ActionTypeE.CREATE, json={
+                    'username': username,
+                    'password': password
+                }
+            )
             with open(CONFIG_PATH, 'w+') as f:
                 f.write(json.dumps(response))
         else:
@@ -92,12 +99,18 @@ class APIService:
             return {'info': 'Instance deleted.'}
         return response.json()
 
-    def request(self, app_name, endpoint_name, action=ActionTypeE.LIST, **kwargs):
+    def request(self, app_name, endpoint_name,
+                action=ActionTypeE.LIST, **kwargs):
         path = self.paths[app_name][endpoint_name]
         instance_id = None
-        if action in [ActionTypeE.EDIT, ActionTypeE.DELETE, ActionTypeE.GET]:
+        if action in [ActionTypeE.EDIT,
+                      ActionTypeE.DELETE,
+                      ActionTypeE.GET]:
             instance_id = kwargs.pop('id', None)
             if not instance_id:
                 # just in case - should be ok;
                 raise ClickException('This action requires instance ID.')
-        return self.make_call(path=path, instance_id=instance_id, method=METHOD_MAP[action], **kwargs)
+        return self.make_call(
+            path=path, instance_id=instance_id,
+            method=METHOD_MAP[action], **kwargs
+        )
