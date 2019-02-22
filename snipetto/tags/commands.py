@@ -1,13 +1,19 @@
-import click
+import json
 
-from snipetto.tags.services import TagsService
+import click
 
 
 @click.group()
-def tags():
+@click.pass_context
+def tags(ctx):
     pass
 
 
 @tags.command()
-def all():
-    TagsService.list_tags()
+@click.pass_context
+def list(ctx):
+    api = ctx.obj['api']
+    response = api.request(
+        'tags', 'list'
+    )
+    click.echo(json.dumps(response, indent=4))
