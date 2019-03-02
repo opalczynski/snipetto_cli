@@ -1,7 +1,7 @@
 from click import ClickException
 
 
-def get_snippet(start, end, file):
+def get_snippet_code(start, end, file):
     if start and end:
         if start > end:
             raise ClickException('Start can not be bigger than end.')

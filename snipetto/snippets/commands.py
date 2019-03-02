@@ -3,7 +3,7 @@ from click import ClickException
 from snipetto.core.services import ActionTypeE
 from snipetto.snippets.parsers import TagParser
 from snipetto.snippets.printer import Printer
-from snipetto.snippets.helpers import get_snippet
+from snipetto.snippets.helpers import get_snippet_code
 
 
 @click.command(name='get')
@@ -65,7 +65,7 @@ def add_snippet(ctx, slug, tags, file, start, end):
     be created."""
     api = ctx.obj['api']
     tags = TagParser(raw_tags=tags).parse()
-    snippet = get_snippet(start, end, file)
+    snippet = get_snippet_code(start, end, file)
 
     response = api.request(
         'snippets', 'list',
@@ -105,7 +105,7 @@ def edit_snippet(ctx, slug, tags, file, start, end):
         raise ClickException("Sorry, nothing to edit.")
     json_data = {}
     for option in [
-        ('snippet', get_snippet(start, end, file) if file else None),
+        ('snippet', get_snippet_code(start, end, file) if file else None),
         ('tags', tags),
         ('slug', slug)
     ]:
