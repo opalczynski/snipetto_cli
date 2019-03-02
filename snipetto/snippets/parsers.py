@@ -7,5 +7,5 @@ class TagParser:
 
     def parse(self):
         return [
-            {'name': tag} for tag in self.raw_tags.split(',')
+            {'name': tag.strip()} for tag in self.raw_tags.split(',')
         ]

@@ -1,4 +1,6 @@
 import click
+from click import ClickException
+
 from snipetto.core.services import APIService
 from snipetto.snippets.commands import (
     add_snippet,
@@ -28,5 +30,10 @@ entry_point.add_command(delete_snippet)
 entry_point.add_command(get_snippet)
 
 
-if __name__ == '__main__':
-    entry_point(obj={})
+def main():
+    try:
+        entry_point(obj={})
+    except ClickException:
+        raise ClickException('Snippetto CLI exception.')
+    except Exception as e:
+        raise e

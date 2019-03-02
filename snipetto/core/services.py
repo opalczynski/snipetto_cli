@@ -50,11 +50,13 @@ class APIService:
 
     def _request(self, path, instance_id=None, method='get', **kwargs):
         http_method = getattr(self.session, method)
-        response = http_method(
-            self._build_url(
+        if not path.startswith('http'):
+            path = self._build_url(
                 path=path,
                 instance_id=instance_id
-            ),
+            )
+        response = http_method(
+            path,
             headers={
                 'Content-Type': 'application/json',
                 'Authorization': 'Token {}'.format(self.token),
@@ -100,8 +102,11 @@ class APIService:
         self._initialize_user()
 
     def request(self, app_name, endpoint_name,
-                action=ActionTypeE.LIST, **kwargs):
-        path = self.paths[app_name][endpoint_name]
+                action=ActionTypeE.LIST,
+                path=None, **kwargs):
+        if not path:
+            # if we provide path - ignore the creation;
+            path = self.paths[app_name][endpoint_name]
         instance_id = None
         if action in [ActionTypeE.EDIT,
                       ActionTypeE.DELETE,
