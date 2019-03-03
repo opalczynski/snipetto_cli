@@ -22,11 +22,9 @@ jobs:
           name: Bandit
           command: bandit -r .
       - run:
-          name: Pull service image
-          command: docker pull trurlit/snippetto-service:latest
-      - run:
-          name: Run and setup snippetto service
-          command: CONTAINER_ID=$(docker run -d -e "ENVIRONMENT=development" -e "DJANGO_SETTINGS_MODULE=settings.development" -p 8000:8000 trurlit/snippetto-service:latest);docker exec -it ${CONTAINER_ID} python manage.py migrate;docker exec -it ${CONTAINER_ID} python manage.py create_test_user
-      - run:
-          name: Test CLI
-          command: python setup.py test
+          name: Run and setup snippetto service & Test CLI
+          command: |
+            CONTAINER_ID=$(docker run -d -e "ENVIRONMENT=development" -e "DJANGO_SETTINGS_MODULE=settings.development" -p 8000:8000 trurlit/snippetto-service:latest)
+            docker exec -it ${CONTAINER_ID} python manage.py migrate
+            docker exec -it ${CONTAINER_ID} python manage.py create_test_user
+            python setup.py test
