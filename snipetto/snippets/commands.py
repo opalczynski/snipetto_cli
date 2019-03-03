@@ -1,6 +1,5 @@
 import click
 from click import ClickException
-
 from snipetto.core.pagination import Paginator
 from snipetto.core.services import ActionTypeE
 from snipetto.snippets.helpers import get_snippet_code

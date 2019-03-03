@@ -1,9 +1,8 @@
 import io
 import random
 
-from tests.base import BaseSnippettoTestCase
-
 from snipetto.cli import entry_point as cli
+from tests.base import BaseSnippettoTestCase
 
 
 class SnippetTestCase(BaseSnippettoTestCase):

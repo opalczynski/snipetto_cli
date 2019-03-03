@@ -1,7 +1,6 @@
 from unittest import TestCase
 
 from click.testing import CliRunner
-
 from snipetto.cli import entry_point as cli
 
 
