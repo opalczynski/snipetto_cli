@@ -5,6 +5,7 @@ jobs:
       - image: circleci/python:3.6.4
     working_directory: ~/snipetto_cli
     steps:
+      - setup_remote_docker
       - checkout
       - run: sudo chown -R circleci:circleci /usr/local/bin
       - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6/site-packages
