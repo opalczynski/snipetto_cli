@@ -3,6 +3,8 @@ jobs:
   build:
     docker:
       - image: circleci/python:3.6.4
+      - image: trurlit/snippetto-service:test-ci
+
     working_directory: ~/snipetto_cli
     steps:
       - setup_remote_docker
@@ -21,13 +23,6 @@ jobs:
       - run:
           name: Bandit
           command: bandit -r .
-      - run: echo 127.0.0.1 devhost | sudo tee -a /etc/hosts
       - run:
-          name: Run and setup snippetto service & Test CLI
-          command: |
-            CONTAINER_ID=$(docker run -d -e "ENVIRONMENT=development" -e "DJANGO_SETTINGS_MODULE=settings.development" -p 8000:8000 trurlit/snippetto-service:latest)
-            docker exec -it ${CONTAINER_ID} python manage.py migrate
-            docker exec -it ${CONTAINER_ID} python manage.py create_test_user
-            ifconfig
-            docker ps
-            python setup.py test
+          name: Test CLI
+          command: python setup.py test
