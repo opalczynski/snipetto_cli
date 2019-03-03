@@ -29,10 +29,10 @@ jobs:
           command: CONTAINER_ID=$(docker run -d -e "ENVIRONMENT=development" -e "DJANGO_SETTINGS_MODULE=settings.development" trurlit/snippetto-service:latest)
       - run:
           name: Service migrations
-          command: docker exec -it $CONTAINER_ID python manage.py migrations
+          command: docker exec -it ${CONTAINER_ID} python manage.py migrate
       - run:
           name: Create test user
-          command: docker exec -it $CONTAINER_ID python manage.py create_test_user
+          command: docker exec -it ${CONTAINER_ID} python manage.py create_test_user
       - run:
           name: Test CLI
           command: python setup.py test
