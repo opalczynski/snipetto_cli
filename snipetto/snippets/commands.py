@@ -1,5 +1,7 @@
 import click
 from click import ClickException
+
+from snipetto.core.pagination import Paginator
 from snipetto.core.services import ActionTypeE
 from snipetto.snippets.helpers import get_snippet_code
 from snipetto.snippets.parsers import TagParser
@@ -49,6 +51,8 @@ def delete_snippet(ctx, slug):
               help="The snippet slug.")
 @click.option('--tags', 'tags', type=str, required=True,
               help="The snippet tags, comma separated list.")
+@click.option('--desc', 'description', type=str, required=True,
+              help="The snippet description.")
 @click.option('--file', 'file', type=click.File('r'), required=True,
               help="The file from which snippet will be created.")
 @click.option('--start', 'start', type=int, required=False,
@@ -56,7 +60,7 @@ def delete_snippet(ctx, slug):
 @click.option('--end', 'end', type=int, required=False,
               help="End line number in file. Optional.")
 @click.pass_context
-def add_snippet(ctx, slug, tags, file, start, end):
+def add_snippet(ctx, slug, tags, description, file, start, end):
     """Allows to add new snippet to your base.
 
     Current implementation allows to add snippets from files -
@@ -73,7 +77,8 @@ def add_snippet(ctx, slug, tags, file, start, end):
         json={
             "snippet": snippet,
             "tags": tags,
-            "slug": slug
+            "slug": slug,
+            "description": description if description else ''
         }
     )
     Printer(json_snippet=response).print(
@@ -138,27 +143,38 @@ def search_snippet(ctx, slug, tags):
     like - this means that if you specify two tags: `python,django` only
     those snippets will be returned that have both tags.
     """
-    if not tags and not slug:
-        raise ClickException("One of the option needs "
-                             "to be provided: slug, tags, or both.")
-    api = ctx.obj['api']
-    response = api.request(
-        'snippets', 'list',
-        action=ActionTypeE.LIST,
-        params={
-            "tags": tags,
-            "slug": slug
-        }
-    )
-    Printer(json_snippet=response, is_list=True).print()
+    def snippet_search(ctx, path=None):
+        if not tags and not slug:
+            raise ClickException("One of the option needs "
+                                 "to be provided: slug, tags, or both.")
+        api = ctx.obj['api']
+        response = api.request(
+            'snippets', 'list',
+            action=ActionTypeE.LIST,
+            params={
+                "tags": tags,
+                "slug": slug
+            },
+            path=path
+        )
+        Printer(json_snippet=response, is_list=True).print()
+        Paginator(response, ctx=ctx, method=snippet_search).handle()
+    snippet_search(ctx)
 
 
 @click.command(name='list')
+@click.option('--skip-snippet', 'skip_snippet', is_flag=True, required=False,
+              help="Will list only slug and base information.")
 @click.pass_context
-def list_snippet(ctx):
+def list_snippet(ctx, skip_snippet):
     """Will list snippets available in your base."""
-    api = ctx.obj['api']
-    response = api.request(
-        'snippets', 'list'
-    )
-    Printer(json_snippet=response, is_list=True).print()
+    def snippet_list(ctx, path=None):
+        api = ctx.obj['api']
+        response = api.request(
+            'snippets', 'list', path=path
+        )
+        Printer(json_snippet=response, is_list=True).print(
+            skip_snippet=skip_snippet
+        )
+        Paginator(response, ctx=ctx, method=snippet_list).handle()
+    snippet_list(ctx)

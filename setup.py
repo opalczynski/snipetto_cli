@@ -16,7 +16,7 @@ setup(
     packages=find_packages(),
     license='MIT',
     install_requires=['requests>=2.21.0', 'click>=6.6'],
-    # test_suite='tests',
+    test_suite='tests',
     entry_points="""
         [console_scripts]
         snippetto=snipetto.cli:main
