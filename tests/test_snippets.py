@@ -1,29 +1,88 @@
+import io
+import random
+
 from tests.base import BaseSnippettoTestCase
+
+from snipetto.cli import entry_point as cli
 
 
 class SnippetTestCase(BaseSnippettoTestCase):
+    """Base test suite for snippetto CLI; it needs to be extended in the
+    future. Currently tests assumes that you have snipetto_service available
+    - which is not big deal, as this is dockerized."""
+
+    @classmethod
+    def setUpClass(cls):
+        # add some snippet to be able to test something;
+        super().setUpClass()
+        cls.snippet_slug = 'randomname{}'.format(random.randint(0, 2000))
+        cls._create_snippet(cls.snippet_slug)
+
+    @classmethod
+    def _create_snippet(self, snippet_slug):
+        result = self.runner.invoke(
+            cli,
+            args=[
+                'add',
+                '--slug', snippet_slug,
+                '--tags', 'python,django',
+                '--file', io.StringIO('import django'),
+                '--desc', 'Test description'
+            ],
+            obj={}
+        )
+        return result
 
     def test_add(self):
-        pass
+        snippet_slug = 'randomnameadd{}'.format(random.randint(0, 2000))
+        result = self._create_snippet(snippet_slug)
+        self.assertIn(snippet_slug, result.output)
 
     def test_delete(self):
-        pass
+        snippet_slug = 'randomnamedelete{}'.format(random.randint(0, 2000))
+        self._create_snippet(snippet_slug)
+        result = self.runner.invoke(
+            cli,
+            args=[
+                'delete', snippet_slug
+            ],
+            obj={}
+        )
+        confirm_string = 'Your snippet has been deleted.'
+        self.assertIn(confirm_string, result.output)
 
     def test_edit(self):
-        pass
+        new_desc = 'Yet another new description.'
+        result = self.runner.invoke(
+            cli,
+            args=[
+                'edit', self.snippet_slug,
+                '--desc', new_desc
+            ],
+            obj={}
+        )
+        self.assertIn(new_desc, result.output)
 
     def test_get(self):
-        pass
+        result = self.runner.invoke(
+            cli,
+            args=[
+                'get', self.snippet_slug
+            ],
+            obj={}
+        )
+        self.assertIn(self.snippet_slug, result.output)
 
     def test_list(self):
-        pass
+        result = self.runner.invoke(
+            cli,
+            args=[
+                'list',
+            ],
+            input='N',
+            obj={}
+        )
+        self.assertIn(self.snippet_slug, result.output)
 
     def test_search(self):
         pass
-
-# add     Allows to add new snippet to your base.
-# delete  Will delete the snippet from your base.
-# edit    Will edit snippet with given slug.
-# get     Will return snippet details by slug.
-# list    Will list snippets available in your base.
-# search  Allows to search for snippets.
