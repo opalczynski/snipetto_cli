@@ -9,8 +9,8 @@ class BaseSnippettoTestCase(TestCase):
     @classmethod
     def setUpClass(cls):
         cls.runner = CliRunner()
-        cls.test_username = 'opalczynski'
-        cls.test_password = 'pass1234'
+        cls.test_username = 'testuser'
+        cls.test_password = 'testpass1234'
         # invoke runner once to create credentials file:
         cls.runner.invoke(
             cli,

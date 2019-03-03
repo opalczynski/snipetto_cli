@@ -14,7 +14,8 @@ class SnippetTestCase(BaseSnippettoTestCase):
     def setUpClass(cls):
         # add some snippet to be able to test something;
         super().setUpClass()
-        cls.snippet_slug = 'randomname{}'.format(random.randint(0, 2000))
+        cls.snippet_slug = 'randomname{}'.format(
+            random.randint(0, 2000))  # nosec
         cls._create_snippet(cls.snippet_slug)
 
     @classmethod
@@ -33,12 +34,14 @@ class SnippetTestCase(BaseSnippettoTestCase):
         return result
 
     def test_add(self):
-        snippet_slug = 'randomnameadd{}'.format(random.randint(0, 2000))
+        snippet_slug = 'randomnameadd{}'.format(
+            random.randint(0, 2000))  # nosec
         result = self._create_snippet(snippet_slug)
         self.assertIn(snippet_slug, result.output)
 
     def test_delete(self):
-        snippet_slug = 'randomnamedelete{}'.format(random.randint(0, 2000))
+        snippet_slug = 'randomnamedelete{}'.format(
+            random.randint(0, 2000))  # nosec
         self._create_snippet(snippet_slug)
         result = self.runner.invoke(
             cli,
