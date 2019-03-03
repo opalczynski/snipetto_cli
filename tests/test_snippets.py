@@ -84,8 +84,6 @@ class SnippetTestCase(BaseSnippettoTestCase):
             input='N',
             obj={}
         )
-        print(result.exception)
-        print(result.exc_info)
         self.assertIn(self.snippet_slug, result.output)
 
     def test_search(self):
