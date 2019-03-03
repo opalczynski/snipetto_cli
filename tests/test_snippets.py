@@ -84,7 +84,18 @@ class SnippetTestCase(BaseSnippettoTestCase):
             input='N',
             obj={}
         )
+        print(result.exception)
+        print(result.exc_info)
         self.assertIn(self.snippet_slug, result.output)
 
     def test_search(self):
-        pass
+        result = self.runner.invoke(
+            cli,
+            args=[
+                'search',
+                '--tags', 'python'
+            ],
+            input='N',
+            obj={}
+        )
+        self.assertIn(self.snippet_slug, result.output)
