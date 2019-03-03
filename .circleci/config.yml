@@ -28,5 +28,5 @@ jobs:
             docker exec -it ${CONTAINER_ID} python manage.py migrate
             docker exec -it ${CONTAINER_ID} python manage.py create_test_user
             ifconfig
-            netstat -l
+            docker ps
             python setup.py test
