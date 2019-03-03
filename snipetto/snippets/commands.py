@@ -89,16 +89,19 @@ def add_snippet(ctx, slug, tags, description, file, start, end):
 @click.command(name='edit')
 @click.argument('slug', type=str)
 @click.option('--tags', 'tags', type=str,
-              help="The snippet tags, comma separated list.")
-# for now auto adding just from the file
+              help="The snippet tags, comma separated list.",
+              required=False)
+@click.option('--desc', 'description', type=str, required=True,
+              help="The snippet description.")
 @click.option('--file', 'file', type=click.File('r'),
-              help="The file from which snippet will be created.")
+              help="The file from which snippet will be created.",
+              required=False)
 @click.option('--start', 'start', type=int, required=False,
               help="Start line number in file. Optional.")
 @click.option('--end', 'end', type=int, required=False,
               help="End line number in file. Optional.")
 @click.pass_context
-def edit_snippet(ctx, slug, tags, file, start, end):
+def edit_snippet(ctx, slug, tags, description, file, start, end):
     """Will edit snippet with given slug.
 
     It allows to override tags and file. You can also specify start and end
@@ -106,13 +109,14 @@ def edit_snippet(ctx, slug, tags, file, start, end):
     api = ctx.obj['api']
     instance_id = api.get_id_by_slug(slug)
     tags = TagParser(raw_tags=tags).parse()
-    if not file and not tags:
+    if not file and not tags and not slug and not description:
         raise ClickException("Sorry, nothing to edit.")
     json_data = {}
     for option in [
         ('snippet', get_snippet_code(start, end, file) if file else None),
         ('tags', tags),
-        ('slug', slug)
+        ('slug', slug),
+        ('description', description)
     ]:
         if option[1]:
             json_data.update({option[0]: option[1]})

@@ -6,6 +6,8 @@ class TagParser:
         self.raw_tags = raw_tags
 
     def parse(self):
-        return [
-            {'name': tag.strip()} for tag in self.raw_tags.split(',')
-        ]
+        if self.raw_tags:
+            return [
+                {'name': tag.strip()} for tag in self.raw_tags.split(',')
+            ]
+        return None
