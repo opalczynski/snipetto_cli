@@ -21,6 +21,7 @@ jobs:
       - run:
           name: Bandit
           command: bandit -r .
+      - run: echo 127.0.0.1 devhost | sudo tee -a /etc/hosts
       - run:
           name: Run and setup snippetto service & Test CLI
           command: |
