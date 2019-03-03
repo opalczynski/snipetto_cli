@@ -1,6 +1,5 @@
 import click
 from click import ClickException
-
 from snipetto.core.services import APIService
 from snipetto.snippets.commands import (
     add_snippet,

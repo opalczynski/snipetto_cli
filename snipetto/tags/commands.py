@@ -1,5 +1,4 @@
 import click
-
 from snipetto.core.pagination import Paginator
 from snipetto.tags.printer import Printer
 

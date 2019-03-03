@@ -1,9 +1,9 @@
 import click
 from click import ClickException
 from snipetto.core.services import ActionTypeE
+from snipetto.snippets.helpers import get_snippet_code
 from snipetto.snippets.parsers import TagParser
 from snipetto.snippets.printer import Printer
-from snipetto.snippets.helpers import get_snippet_code
 
 
 @click.command(name='get')
