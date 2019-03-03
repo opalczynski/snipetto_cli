@@ -6,8 +6,8 @@ import requests
 from click import ClickException
 from snipetto.core.configuration import (
     CONFIG_PATH,
-    SNIPETTO_HOST,
-    SNIPETTO_PATH_CONFIGURATION
+    SNIPPETTO_HOST,
+    SNIPPETTO_PATH_CONFIGURATION
 )
 
 
@@ -31,8 +31,8 @@ METHOD_MAP = {
 class APIService:
 
     def __init__(self):
-        self.host = SNIPETTO_HOST
-        self.configuration_path = SNIPETTO_PATH_CONFIGURATION
+        self.host = SNIPPETTO_HOST
+        self.configuration_path = SNIPPETTO_PATH_CONFIGURATION
         self.paths = {}
         self.token = None
         self.session = requests.session()
